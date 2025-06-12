@@ -5,13 +5,13 @@ namespace MyTodoApp.Service
 {
     public class TodoService(ITodoRepository repository) : ITodoService
     {
-        public Task<IEnumerable<Todo>> GetAllAsync() => repository.GetAllAsync();
-        public Task<Todo?> GetByIdAsync(int id) => repository.GetByIdAsync(id);
-        public Task<Todo> CreateAsync(Todo todo) => repository.CreateAsync(todo);
-        public Task<bool> UpdateAsync(int id, Todo updatedTodo) {
+        public Task<IEnumerable<Todo>> GetAllTodo() => repository.GetAllTodoFromDb();
+        public Task<Todo?> GetTodoById(int id) => repository.GetTodoByIdFromDb(id);
+        public Task<Todo> CreateTodo(Todo todo) => repository.CreateTodoFromDb(todo);
+        public Task<bool> UpdateTodo(int id, Todo updatedTodo) {
             updatedTodo.Id = id;
-           return repository.UpdateTodo(updatedTodo);
+           return repository.UpdateTodoFromDb(updatedTodo);
         }
-        public Task<bool> DeleteAsync(int id) => repository.DeleteTodo(id);
+        public Task<bool> DeleteTodo(int id) => repository.DeleteTodoFromDb(id);
     }
 };
