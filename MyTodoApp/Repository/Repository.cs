@@ -1,6 +1,6 @@
 namespace MyTodoApp.Repository;
 
-public class Repository
+public class Repository : IRepository
 {
     
 }
