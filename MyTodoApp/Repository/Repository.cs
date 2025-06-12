@@ -6,7 +6,7 @@ namespace MyTodoApp.Repository
 {
     public class TodoRepository(TodoContext context) : ITodoRepository
     {
-        public async Task<IEnumerable<Todo>> GetAllTodoFromDb() => await context.Todos.ToListAsync();
+        public async Task<IEnumerable<Todo>> GetAllTodo() => await context.Todos.ToListAsync();
 
         public async Task<Todo?> GetTodoByIdFromDb(int id) => await context.Todos.FindAsync(id);
 
@@ -17,14 +17,14 @@ namespace MyTodoApp.Repository
             return todo;
         }
 
-        public async Task<bool> UpdateTodoFromDb(Todo updatedTodo)
+        public async Task<bool> UpdateTodo(Todo updatedTodo)
         {
             context.Entry(updatedTodo).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> DeleteTodoFromDb(int id)
+        public async Task<bool> DeleteTodo(int id)
         {
             var todo = await context.Todos.FindAsync(id);
             if (todo == null) return false;
