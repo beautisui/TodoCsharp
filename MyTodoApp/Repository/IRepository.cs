@@ -1,6 +1,13 @@
-namespace MyTodoApp.Repository;
+using MyTodoApp.Models.TodoApp;
 
-public interface IRepository
+namespace MyTodoApp.Repository
 {
-    
+    public interface ITodoRepository
+    {
+        Task<IEnumerable<Todo>> GetAllAsync();
+        Task<Todo?> GetByIdAsync(int id);
+        Task<Todo> CreateAsync(Todo todo);
+        Task<bool> UpdateTodo(Todo updatedTodo);
+        Task<bool> DeleteTodo(int id);
+    }
 }

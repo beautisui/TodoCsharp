@@ -13,7 +13,7 @@ builder.Services.AddDbContext<TodoContext>(options =>
 });
 
 builder.Services.AddScoped<ITodoService, TodoService>();
-builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 
 
 // builder.Services.AddSingleton<ITodoService, TodoService>();
