@@ -1,4 +1,4 @@
-using MyTodoApp.Models.TodoApp;
+using MyTodoApp.Models.Entities;
 using MyTodoApp.Repository;
 
 namespace MyTodoApp.Service

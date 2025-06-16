@@ -1,36 +1,57 @@
-using Microsoft.EntityFrameworkCore;
-using MyTodoApp.Models.TodoApp;
+using Dapper;
+using Microsoft.Data.Sqlite;
 using MyTodoApp.Models.Entities;
+using System.Data;
 
 namespace MyTodoApp.Repository
 {
-    public class TodoRepository(TodoContext context) : ITodoRepository
+    public class TodoRepository(IConfiguration configuration) : ITodoRepository
     {
-        public async Task<IEnumerable<Todo>> GetAllTodo() => await context.Todos.ToListAsync();
-
-        public async Task<Todo?> GetTodoByIdFromDb(int id) => await context.Todos.FindAsync(id);
+        private IDbConnection CreateConnection()
+        {
+            return new SqliteConnection(configuration.GetConnectionString("DefaultConnection"));
+        }
 
         public async Task<Todo> CreateTodoFromDb(Todo todo)
         {
-            context.Todos.Add(todo);
-            await context.SaveChangesAsync();
+            var sql = "INSERT INTO Todos (Title, IsCompleted) VALUES (@Title, @IsCompleted)";
+            using var connection = CreateConnection();
+            await connection.ExecuteAsync(sql, todo);
             return todo;
-        }
-
-        public async Task<bool> UpdateTodo(Todo updatedTodo)
-        {
-            context.Entry(updatedTodo).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> DeleteTodo(int id)
         {
-            var todo = await context.Todos.FindAsync(id);
-            if (todo == null) return false;
-            context.Todos.Remove(todo);
-            await context.SaveChangesAsync();
-            return true;
+            var sql = "DELETE FROM Todos WHERE Id = @Id";
+            using var connection = CreateConnection();
+            var affectedRows = await connection.ExecuteAsync(sql, new { Id = id });
+            return affectedRows > 0;
+        }
+
+        public async Task<IEnumerable<Todo>> GetAllTodo()
+        {
+            var sql = "SELECT * FROM Todos";
+            using var connection = CreateConnection();
+            return await connection.QueryAsync<Todo>(sql);
+        }
+
+        public async Task<Todo?> GetTodoByIdFromDb(int id)
+        {
+            var sql = "SELECT * FROM Todos WHERE Id = @Id";
+            using var connection = CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<Todo>(sql, new { Id = id });
+        }
+
+        public async Task<bool> UpdateTodo(Todo updatedTodo)
+        {
+            var sql = @"UPDATE Todos 
+                        SET Name = @Name, 
+                            IsComplete = @IsComplete 
+                        WHERE Id = @Id";
+
+            using var connection = CreateConnection();
+            var affectedRows = await connection.ExecuteAsync(sql, updatedTodo);
+            return affectedRows > 0;
         }
     }
 }

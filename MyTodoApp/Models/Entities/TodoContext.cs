@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MyTodoApp.Models.TodoApp;
 
 namespace MyTodoApp.Models.Entities
 {

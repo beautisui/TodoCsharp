@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyTodoApp.Models.Entities;
-using MyTodoApp.Models.TodoApp;
 using MyTodoApp.Service;
 
 namespace MyTodoApp.Controllers
