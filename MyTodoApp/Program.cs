@@ -11,11 +11,12 @@ builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:5173") 
+        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:5173") 
             .AllowAnyHeader()
             .AllowAnyMethod()));
 // builder.Services.AddSingleton<ITodoService, TodoService>();
 // builder.Services.AddTransient<ITodoService, TodoService>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -24,13 +25,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("AllowSpecificOrigin");
 app.UseAuthorization();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();
