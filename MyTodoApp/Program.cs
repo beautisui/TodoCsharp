@@ -43,8 +43,8 @@ using (var connection = new SqliteConnection(builder.Configuration.GetConnection
     var sql = @"
         CREATE TABLE IF NOT EXISTS Todos (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Name TEXT NOT NULL,
-            IsComplete BOOLEAN NOT NULL
+            Title TEXT NOT NULL,
+            IsCompleted BOOLEAN NOT NULL
         );";
     connection.Execute(sql);
 }
